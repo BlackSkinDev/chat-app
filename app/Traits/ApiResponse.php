@@ -24,7 +24,7 @@ trait ApiResponse
      * @param int $code
      * @return JsonResponse
      */
-    protected function success($data, string $message = null, int $code = 200)
+    protected function success(string $message = null, $data,int $code = 200)
     {
         return response()->json([
             'status' => 'success',
