@@ -2,11 +2,19 @@
 
 namespace App\Exceptions;
 
+use App\Traits\ApiResponse;
+use Illuminate\Auth\AuthenticationException;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
+use Illuminate\Http\Response;
+use Illuminate\Validation\ValidationException;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Symfony\Component\HttpKernel\Exception\UnauthorizedHttpException;
 use Throwable;
 
 class Handler extends ExceptionHandler
 {
+    use ApiResponse;
     /**
      * A list of exception types with their corresponding custom log levels.
      *
@@ -46,5 +54,37 @@ class Handler extends ExceptionHandler
         $this->reportable(function (Throwable $e) {
             //
         });
+    }
+
+    /**
+     * Render an exception into an HTTP response.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \Exception  $exception
+     * @return \Symfony\Component\HttpFoundation\Response
+     *
+     * @throws \Exception
+     */
+    public function render($request,Throwable $e)
+    {
+        if($e instanceof  ModelNotFoundException || $e instanceof NotFoundHttpException){
+            return $this->error('Request not found',null,Response::HTTP_NOT_FOUND);
+        }
+
+        if($e instanceof  AuthenticationException ){
+            return $this->error('Unauthenticated',null,Response::HTTP_UNAUTHORIZED);
+        }
+
+        if ($e instanceof UnauthorizedHttpException) {
+            return $this->error('Oops! Invalid Auth Credentials',null,Response::HTTP_UNAUTHORIZED);
+        }
+
+        if ($e instanceof ValidationException) {
+            return $this->error($e->validator->errors()->first(), $e->validator->errors(),Response::HTTP_UNPROCESSABLE_ENTITY);
+        }
+
+       return $this->error($e->getMessage(),null,Response::HTTP_INTERNAL_SERVER_ERROR);
+
+
     }
 }
