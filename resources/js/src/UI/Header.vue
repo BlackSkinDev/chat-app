@@ -18,12 +18,17 @@
             </svg>
         </div>
         <div class="relative inline-block text-left">
-            <div>
+            <div @click="browse">
                 <img
-                    :src="user.avatar"
+                    :src="uploadedAvatar ? uploadedAvatar :user.avatar"
                     class="object-cover h-12 w-12 rounded-full cursor-pointer"
+                    :class="loading ? 'opacity-20' : '' "
                     :alt="user.username"
                 />
+                <moon-loader :loading="loading" class="absolute -mt-14 -ml-2"></moon-loader>
+            </div>
+            <div class="hidden">
+                <input type="file" ref="file" @change="handleFileUpload">
             </div>
             <div v-show="status" class="absolute right-0 z-10 mt-2 w-56 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none" role="menu" aria-orientation="vertical" aria-labelledby="menu-button" tabindex="-1">
                 <div class="py-1" >
@@ -37,50 +42,72 @@
 </template>
 
 <script>
-import {httpGet} from "../utils/request";
+import {httpGet,httpPost} from "../utils/request";
 import {helpers} from "../utils/helpers"
+import MoonLoader from 'vue-spinner/src/MoonLoader.vue';
+
 export default {
     name: "Header",
     props: {
         dropdown_status: Boolean,
+    },
+    components:{
+        MoonLoader
     },
     data(){
         return{
             app_name:import.meta.env.VITE_APP_NAME,
             user:{},
             status:false,
-            token:localStorage.getItem('access_token')
+            uploadedAvatar:"",
+            loading:false
         }
     },
     methods:{
 
-        async fetchAuthUserDetails() {
+        fetchAuthUserDetails() {
             httpGet('/user').then((res) => {
                 this.user = res.data;
             }).catch((err) => {
-                if (err.status === 401){
-                    helpers.destroyToken()
-                }
+                if (err.status === 401) helpers.destroyToken(true)
+                this.$toast.show(err.data.message, {
+                    type: 'error',
+                });
             })
+        },
+        logout(){
+            httpPost('/logout').then(() => {
+                helpers.destroyToken()
+            }).catch((err) => {
+                if (err.status === 401) helpers.destroyToken(true)
+                this.$toast.show(err.data.message, {
+                    type: 'error',
+                });
+            })
+        },
+        handleFileUpload(){
+            let formData = new FormData();
+            formData.append('file', this.$refs.file.files[0]);
+            this.loading = true;
+            httpPost('/user/upload',formData).then((res) => {
+                this.uploadedAvatar = res.data;
+                helpers.successResponse(res.message)
+            }).catch((err) => {
+                if (err.status === 401) helpers.destroyToken(true)
+                helpers.errorResponse(err.data.message)
+            })
+            .finally(() => {
+                this.loading = false
+            });
         },
         toggleDropdown(){
             this.status = !this.status
         },
-        async logout(){
-            const options = {
-                url: `/logout`,
-                method: "POST",
-                headers:{
-                    Authorization: `Bearer ${this.token}`
-                }
-            };
-            try {
-                 await axios(options);
-                localStorage.removeItem('access_token')
-                this.$router.push('/');
-            } catch ({response}) {}
+        browse(){
+            this.$refs.file.click()
+        },
 
-        }
+
     },
     created() {
         this.fetchAuthUserDetails()
