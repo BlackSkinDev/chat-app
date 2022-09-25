@@ -22,6 +22,6 @@ class RegisterController extends Controller
     public function store(RegisterRequest $request):JsonResponse
     {
         User::create($request->validated());
-        return  $this->success(null,'Registration successful',Response::HTTP_CREATED);
+        return  $this->success('Registration successful',null,Response::HTTP_CREATED);
     }
 }

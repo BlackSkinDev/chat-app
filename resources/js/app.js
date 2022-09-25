@@ -6,4 +6,12 @@ import router from './src/router/index.js'
 
 import App from './App.vue'
 
-createApp(App).use(router).mount("#app")
+import Toaster from '@meforma/vue-toaster';
+
+createApp(App)
+    .use(router)
+    .use(Toaster, {
+        position: 'top-right',
+        duration:3000
+    })
+    .mount("#app")

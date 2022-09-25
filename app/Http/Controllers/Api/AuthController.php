@@ -24,7 +24,7 @@ class AuthController extends Controller
     {
 
         if (!Auth::attempt($request->validated())) {
-            return $this->error("Credentials not match", null,Response::HTTP_UNAUTHORIZED);
+            return $this->error("Invalid login credentials", null,Response::HTTP_UNAUTHORIZED);
         }
 
         return $this->success(
