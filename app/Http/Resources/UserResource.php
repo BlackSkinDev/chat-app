@@ -18,7 +18,7 @@ class UserResource extends JsonResource
             'id'        =>$this->id,
             'username'  =>$this->username,
             'email'     =>$this->email,
-            'avatar'    =>$this->avatar
+            'avatar'    =>$this->avatar ?? config('app.url')."/images/avatar.png"
         ];
     }
 }
