@@ -1,9 +1,11 @@
 <template>
-    <div class="p-10">
+    <div class="p-10" @click="closeDropdown">
+
         <!-- This is an example component -->
         <div class="container mx-auto shadow-lg rounded-lg">
 
             <Header></Header>
+
             <!-- Chatting -->
             <div class="flex flex-row justify-between bg-white">
                 <!-- chat list -->
@@ -172,11 +174,10 @@ export default {
     },
     data() {
         return {
-
+            dropdown_status:false
         }
     },
     methods: {
-
     }
 }
 </script>

@@ -33,7 +33,7 @@ const router = createRouter({
 })
 
 router.beforeEach((to, from, next) => {
-    let isAuthenticated = localStorage.getItem("access_token")
+    let isAuthenticated = localStorage.getItem("access_token") || null
     if (protectedRoutes.includes(to.name)) {
         if (!isAuthenticated) {
             next({
