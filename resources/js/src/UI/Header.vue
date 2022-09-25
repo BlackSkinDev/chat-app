@@ -12,7 +12,11 @@
             />
         </div>
         <div class="-mr-32 text-xl">Hi {{user.username}}</div>
-        <img class="h-16 w-18 p-2  rounded-full text-white font-semibold flex items-center justify-center" :src="user.avatar">
+        <img
+            :src="user.avatar"
+            class="object-cover h-12 w-12 rounded-full"
+            alt=""
+        />
     </div>
     <!-- end header -->
 </template>
