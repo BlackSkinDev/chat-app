@@ -70,9 +70,7 @@ export default {
                 this.user = res.data;
             }).catch((err) => {
                 if (err.status === 401) helpers.destroyToken(true)
-                this.$toast.show(err.data.message, {
-                    type: 'error',
-                });
+                helpers.errorResponse(err.data.message)
             })
         },
         logout(){
@@ -80,9 +78,7 @@ export default {
                 helpers.destroyToken()
             }).catch((err) => {
                 if (err.status === 401) helpers.destroyToken(true)
-                this.$toast.show(err.data.message, {
-                    type: 'error',
-                });
+                helpers.errorResponse(err.data.message)
             })
         },
         handleFileUpload(){

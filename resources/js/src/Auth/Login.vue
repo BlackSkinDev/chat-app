@@ -44,6 +44,8 @@
 </template>
 <script>
 import Button from "../UI/Button.vue";
+import {httpPost} from "../utils/request";
+import {helpers} from "../utils/helpers";
 
 export default {
     components: {
@@ -59,29 +61,20 @@ export default {
         }
     },
     methods: {
-        async login() {
-            this.loading = true;
-            let payload = {
-                email: this.email,
-                password: this.password
-            }
-            const options = {
-                url: `${import.meta.env.VITE_API_URL}/login`,
-                method: "POST",
-                data: payload
-            };
-            try {
-                const {data:{data:{token}}} = await axios(options);
-                localStorage.setItem('access_token',token)
-                this.$router.push({ name: "Home" })
 
-            } catch ({response}) {
-                this.$toast.show(response.data.message, {
-                    type: 'error',
-                });
-            } finally {
-                this.loading = false;
-            }
+         login() {
+            this.loading = true;
+            let payload = {email: this.email, password: this.password}
+            httpPost('/login',payload).then((res) => {
+                const {data:{token}} = res;
+                helpers.setToken(token)
+            }).catch((err) => {
+                if (err.status === 401) helpers.destroyToken(true)
+                helpers.errorResponse(err.data.message)
+            })
+            .finally(() => {
+                this.loading = false
+            });
         },
     },
     created() {

@@ -48,6 +48,8 @@
 <script>
 
 import Button from "../UI/Button.vue";
+import {httpPost} from "../utils/request";
+import {helpers} from "../utils/helpers";
 
 
 export default {
@@ -67,37 +69,27 @@ export default {
     methods: {
         async register() {
             this.loading = true;
-            let payload = {
-                username: this.username,
-                email: this.email,
-                password: this.password
-            }
-            const options = {
-                url: `${import.meta.env.VITE_API_URL}/register`,
-                method: "POST",
-                data: payload
-            };
-            try {
-                const {data} = await axios(options);
-                this.$toast.show(`${data.message}. Redirecting to Login...`, {
+            let payload = {email: this.email, password: this.password, username: this.username,}
+            httpPost('/register',payload).then((res) => {
+                const {message} = res;
+                this.$toast.show(`${message}. Redirecting to Login...`, {
                     type: 'success',
                     duration: 4000
                 });
                 this.username = ''
                 this.email    = ''
                 this.password = ''
-
                 setTimeout(() => {
-                     this.$router.push({ name: "Login" });
+                    this.$router.push({ name: "Login" });
                 }, 4000);
 
-            } catch ({response}) {
-                this.$toast.show(response.data.message, {
-                    type: 'error',
-                });
-            } finally {
-                this.loading = false;
-            }
+            }).catch((err) => {
+                helpers.errorResponse(err.data.message)
+            })
+            .finally(() => {
+                this.loading = false
+            });
+
         },
 
     },

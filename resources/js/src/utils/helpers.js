@@ -13,6 +13,10 @@ export const helpers = {
         localStorage.removeItem('access_token')
         router.push({ path: '/', query});
     },
+    setToken : (token)=>{
+        localStorage.setItem('access_token',token)
+        router.push({ path: '/home'});
+    },
     errorResponse : (message)=>{
         toaster.error(message);
     },
