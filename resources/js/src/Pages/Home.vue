@@ -1,13 +1,13 @@
 <template>
-    <div class="p-10" @click="closeDropdown">
+    <div class="p-10" >
 
         <!-- This is an example component -->
-        <div class="container mx-auto shadow-lg rounded-lg">
+        <div class="container mx-auto shadow-lg rounded-lg h-full" >
 
             <Header></Header>
 
             <!-- Chatting -->
-            <div class="flex flex-row justify-between bg-white">
+            <div class="flex flex-row justify-between">
                 <!-- chat list -->
                 <div class="flex flex-col w-2/5 border-r-2 overflow-y-auto">
                     <!-- search compt -->
@@ -20,92 +20,32 @@
                     </div>
                     <!-- end search compt -->
                     <!-- user list -->
-                    <div
-                        class="flex flex-row py-4 px-2 justify-center items-center border-b-2"
+
+                    <div v-for="(contact,idx) in contacts"
+                         :key="idx"
+                         @click="onTabChange(`${contact.name}`)"
+                         class="flex flex-row py-4 px-2 items-center border-b-2 cursor-pointer"
+                         :class="activeTab === contact.name ? 'border-l-4 border-blue-400': ''"
                     >
+
                         <div class="w-1/4">
                             <img
-                                src="https://source.unsplash.com/_7LbC5J-jw4/600x600"
+                                :src="contact.image"
                                 class="object-cover h-12 w-12 rounded-full"
                                 alt=""
                             />
                         </div>
                         <div class="w-full">
-                            <div class="text-lg font-semibold">Luis1994</div>
-                            <span class="text-gray-500">Pick me at 9:00 Am</span>
-                        </div>
-                    </div>
-                    <div class="flex flex-row py-4 px-2 items-center border-b-2">
-                        <div class="w-1/4">
-                            <img
-                                src="https://source.unsplash.com/otT2199XwI8/600x600"
-                                class="object-cover h-12 w-12 rounded-full"
-                                alt=""
-                            />
-                        </div>
-                        <div class="w-full">
-                            <div class="text-lg font-semibold">Everest Trip 2021</div>
-                            <span class="text-gray-500">Hi Sam, Welcome</span>
-                        </div>
-                    </div>
-                    <div
-                        class="flex flex-row py-4 px-2 items-center border-b-2 border-l-4 border-blue-400"
-                    >
-                        <div class="w-1/4">
-                            <img
-                                src="https://source.unsplash.com/L2cxSuKWbpo/600x600"
-                                class="object-cover h-12 w-12 rounded-full"
-                                alt=""
-                            />
-                        </div>
-                        <div class="w-full">
-                            <div class="text-lg font-semibold">MERN Stack</div>
-                            <span class="text-gray-500">Lusi : Thanks Everyone</span>
-                        </div>
-                    </div>
-                    <div class="flex flex-row py-4 px-2 items-center border-b-2">
-                        <div class="w-1/4">
-                            <img
-                                src="https://source.unsplash.com/vpOeXr5wmR4/600x600"
-                                class="object-cover h-12 w-12 rounded-full"
-                                alt=""
-                            />
-                        </div>
-                        <div class="w-full">
-                            <div class="text-lg font-semibold">Javascript Indonesia</div>
-                            <span class="text-gray-500">Evan : some one can fix this</span>
-                        </div>
-                    </div>
-                    <div class="flex flex-row py-4 px-2 items-center border-b-2">
-                        <div class="w-1/4">
-                            <img
-                                src="https://source.unsplash.com/vpOeXr5wmR4/600x600"
-                                class="object-cover h-12 w-12 rounded-full"
-                                alt=""
-                            />
-                        </div>
-                        <div class="w-full">
-                            <div class="text-lg font-semibold">Javascript Indonesia</div>
-                            <span class="text-gray-500">Evan : some one can fix this</span>
+                            <div class="text-lg font-semibold">{{contact.name}}</div>
+                            <span class="text-gray-500">{{contact.last_msg}}</span>
                         </div>
                     </div>
 
-                    <div class="flex flex-row py-4 px-2 items-center border-b-2">
-                        <div class="w-1/4">
-                            <img
-                                src="https://source.unsplash.com/vpOeXr5wmR4/600x600"
-                                class="object-cover h-12 w-12 rounded-full"
-                                alt=""
-                            />
-                        </div>
-                        <div class="w-full">
-                            <div class="text-lg font-semibold">Javascript Indonesia</div>
-                            <span class="text-gray-500">Evan : some one can fix this</span>
-                        </div>
-                    </div>
                     <!-- end user list -->
                 </div>
                 <!-- end chat list -->
+
+
                 <!-- message -->
                 <div class="w-full px-5 flex flex-col justify-between">
                     <div class="flex flex-col mt-5">
@@ -138,7 +78,7 @@
                     </div>
                     <div class="py-5">
                         <input
-                            class="w-full bg-gray-300 py-5 px-3 rounded-xl"
+                            class="w-full  py-5 px-3 rounded-xl"
                             type="text"
                             placeholder="type your message here..."
                         />
@@ -174,10 +114,48 @@ export default {
     },
     data() {
         return {
-            dropdown_status:false
+            dropdown_status:false,
+            activeTab:"",
+            contacts:[
+                {
+                    name:'Luis1994',
+                    image:'https://source.unsplash.com/_7LbC5J-jw4/600x600',
+                    last_msg :'Pick me at 9:00 Am'
+                },
+                {
+                    name:'Sam',
+                    image:'https://source.unsplash.com/_7LbC5J-jw4/600x600',
+                    last_msg :'Hi Sam, Welcome'
+                },
+                {
+                    name:'Loccini',
+                    image:'https://source.unsplash.com/_7LbC5J-jw4/600x600',
+                    last_msg :'Hi Loccini, Welcome'
+                },
+                {
+                    name:'Afeez',
+                    image:'https://source.unsplash.com/_7LbC5J-jw4/600x600',
+                    last_msg :'Hi Afeez, Welcome'
+                },
+                {
+                    name:'Seyilaw',
+                    image:'https://source.unsplash.com/_7LbC5J-jw4/600x600',
+                    last_msg :'Hi Seyilaw, Welcome'
+                },
+                {
+                    name:'Lai',
+                    image:'https://source.unsplash.com/_7LbC5J-jw4/600x600',
+                    last_msg :'Hi Lai, Welcome'
+                },
+
+            ]
         }
     },
     methods: {
+        onTabChange(tab){
+            console.log('kkk')
+            this.activeTab = tab
+        }
     }
 }
 </script>
