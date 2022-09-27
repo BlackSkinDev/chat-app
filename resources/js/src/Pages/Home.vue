@@ -1,160 +1,164 @@
 <template>
     <div class="p-10" >
 
-        <!-- This is an example component -->
-        <div class="container mx-auto shadow-lg rounded-lg h-full" >
+        <div class="container h-full mx-auto rounded-lg shadow-lg" >
 
             <Header></Header>
 
-            <!-- Chatting -->
             <div class="flex flex-row justify-between">
-                <!-- chat list -->
-                <div class="flex flex-col w-2/5 border-r-2 overflow-y-auto">
-                    <!-- search compt -->
-                    <div class="border-b-2 py-4 px-2">
-                        <input
-                            type="text"
-                            placeholder="search chatting"
-                            class="py-2 px-2 border-2 border-gray-200 rounded-2xl w-full"
-                        />
-                    </div>
-                    <!-- end search compt -->
-                    <!-- user list -->
 
-                    <div v-for="(contact,idx) in contacts"
-                         :key="idx"
-                         @click="onTabChange(`${contact.name}`)"
-                         class="flex flex-row py-4 px-2 items-center border-b-2 cursor-pointer"
-                         :class="activeTab === contact.name ? 'border-l-4 border-blue-400': ''"
-                    >
+                <!--Left Sidebar (Chats and Chat Search Bar)-->
+                <div class="flex flex-col w-2/5 overflow-y-auto border-r-2 bg-white">
 
-                        <div class="w-1/4">
-                            <img
-                                :src="contact.image"
-                                class="object-cover h-12 w-12 rounded-full"
-                                alt=""
-                            />
-                        </div>
-                        <div class="w-full">
-                            <div class="text-lg font-semibold">{{contact.name}}</div>
-                            <span class="text-gray-500">{{contact.last_msg}}</span>
-                        </div>
-                    </div>
+                   <SearchChat @search="searchChat"></SearchChat>
+<!--                    <div class=" grid place-items-center mt-4">-->
+<!--                        <sync-loader :loading="true"></sync-loader>-->
+<!--                    </div>-->
+                   <ChatContacts :contacts="filteredContacts"></ChatContacts>
 
-                    <!-- end user list -->
                 </div>
-                <!-- end chat list -->
+                <!-- End of Left Sidebar (Chats and Chat Search Bar)-->
 
 
-                <!-- message -->
-                <div class="w-full px-5 flex flex-col justify-between">
-                    <div class="flex flex-col mt-5">
-                        <div class="flex justify-end mb-4">
-                            <div
-                                class=" mr-2 py-3 px-4 relative max-w-xl px-4 py-2 text-gray-700 bg-gray-100 rounded shadow bg-blue-50"
-                            >
-                                Welcome to group everyone !
-                            </div>
-                            <img
-                                src="https://source.unsplash.com/vpOeXr5wmR4/600x600"
-                                class="object-cover h-8 w-8 rounded-full"
-                                alt=""
-                            />
-                        </div>
+                <!--Middle Container  (Chats messages and Message typing  Bar)-->
+                <div class="flex flex-col justify-between w-full px-5">
 
+                    <ChatMessages :chats="chats" :user_id="user_id"></ChatMessages>
 
-                        <div class="flex justify-start mb-4">
-                            <img
-                                src="https://source.unsplash.com/vpOeXr5wmR4/600x600"
-                                class="object-cover h-8 w-8 rounded-full"
-                                alt=""
-                            />
-                            <div
-                                class="ml-2 py-3 px-4 relative max-w-xl px-4 py-2 rounded shadow bg-amber-50"
-                            >
-                                happy holiday guys!
-                            </div>
-                        </div>
-                    </div>
                     <div class="py-5">
                         <input
-                            class="w-full  py-5 px-3 rounded-xl"
+                            class="w-full px-3 py-5 rounded-xl"
                             type="text"
                             placeholder="type your message here..."
                         />
                     </div>
+
                 </div>
-                <!-- end message -->
-                <div class="w-2/5 border-l-2 px-5">
+                <!--End of Middle Container  (Chats messages and Message typing  Bar)-->
+
+
+                <!--Right Sidebar  (Groups)-->
+                <div class="w-2/5 px-5 border-l-2">
                     <div class="flex flex-col">
-                        <div class="font-semibold text-xl py-4">Mern Stack Group</div>
+                        <div class="py-4 text-xl font-semibold">Mern Stack Group</div>
                         <img
                             src="https://source.unsplash.com/L2cxSuKWbpo/600x600"
-                            class="object-cover rounded-xl h-64"
+                            class="object-cover h-64 rounded-xl"
                             alt=""
                         />
-                        <div class="font-semibold py-4">Created 22 Sep 2021</div>
+                        <div class="py-4 font-semibold">Created 22 Sep 2021</div>
                         <div class="font-light">
                             Lorem ipsum dolor sit amet consectetur adipisicing elit. Deserunt,
                             perspiciatis!
                         </div>
                     </div>
                 </div>
+                <!-- End of Right Sidebar  (Groups)-->
+
             </div>
+
+
         </div>
     </div>
 
 </template>
 <script>
 import Header from '../UI/Header.vue'
+import ChatMessages from '../UI/Chat/ChatMessages.vue'
+import ChatContacts from "../UI/Chat/ChatContacts.vue";
+import SearchChat from "../UI/Chat/SearchChat.vue";
+import SyncLoader from 'vue-spinner/src/SyncLoader.vue';
 
 export default {
     components: {
-        Header
+        Header,
+        ChatMessages,
+        ChatContacts,
+        SearchChat,
+        SyncLoader
     },
     data() {
         return {
             dropdown_status:false,
             activeTab:"",
+            user_id:1,
+            filteredContacts:[],
+            loading:false,
             contacts:[
-                {
-                    name:'Luis1994',
-                    image:'https://source.unsplash.com/_7LbC5J-jw4/600x600',
-                    last_msg :'Pick me at 9:00 Am'
-                },
-                {
-                    name:'Sam',
-                    image:'https://source.unsplash.com/_7LbC5J-jw4/600x600',
-                    last_msg :'Hi Sam, Welcome'
-                },
-                {
-                    name:'Loccini',
-                    image:'https://source.unsplash.com/_7LbC5J-jw4/600x600',
-                    last_msg :'Hi Loccini, Welcome'
-                },
-                {
-                    name:'Afeez',
-                    image:'https://source.unsplash.com/_7LbC5J-jw4/600x600',
-                    last_msg :'Hi Afeez, Welcome'
-                },
-                {
-                    name:'Seyilaw',
-                    image:'https://source.unsplash.com/_7LbC5J-jw4/600x600',
-                    last_msg :'Hi Seyilaw, Welcome'
-                },
+                // {
+                //     name:'Luis1994',
+                //     image:'https://source.unsplash.com/_7LbC5J-jw4/600x600',
+                //     last_msg :'Pick me at 9:00 Am'
+                // },
+                // {
+                //     name:'Sam',
+                //     image:'https://source.unsplash.com/_7LbC5J-jw4/600x600',
+                //     last_msg :'Hi Sam, Welcome'
+                // },
+                // {
+                //     name:'Loccini',
+                //     image:'https://source.unsplash.com/_7LbC5J-jw4/600x600',
+                //     last_msg :'Hi Loccini, Welcome'
+                // },
+                // {
+                //     name:'Afeez',
+                //     image:'https://source.unsplash.com/_7LbC5J-jw4/600x600',
+                //     last_msg :'Hi Afeez, Welcome'
+                // },
+                // {
+                //     name:'Seyilaw',
+                //     image:'https://source.unsplash.com/_7LbC5J-jw4/600x600',
+                //     last_msg :'Hi Seyilaw, Welcome'
+                // },
                 {
                     name:'Lai',
                     image:'https://source.unsplash.com/_7LbC5J-jw4/600x600',
                     last_msg :'Hi Lai, Welcome'
                 },
 
+            ],
+            chats:[
+                {
+                    message:'I am coming',
+                    user_id:1,
+                    avatar:'https://source.unsplash.com/vpOeXr5wmR4/600x600'
+                },
+                {
+                    message:'I am not coming',
+                    user_id:2,
+                    avatar:'https://source.unsplash.com/vpOeXr5wmR4/600x600'
+                },
+                {
+                    message:'Where are you',
+                    user_id:1,
+                    avatar:'https://source.unsplash.com/vpOeXr5wmR4/600x600'
+                },
+                {
+                    message:'We are going tomorrow We are going tomorrow We are going tomorrow We are going tomorrow We are going tomorrow We are going tomorrow We are going tomorrow We are going tomorrow We are going tomorrow We are going tomorrow',
+                    user_id:1,
+                    avatar:'https://source.unsplash.com/vpOeXr5wmR4/600x600'
+                },
+                {
+                    message:'Wale don come',
+                    user_id:2,
+                    avatar:'https://source.unsplash.com/vpOeXr5wmR4/600x600'
+                },
             ]
         }
     },
+    mounted() {
+        this.filteredContacts = this.contacts
+    },
     methods: {
-        onTabChange(tab){
-            console.log('kkk')
-            this.activeTab = tab
+        searchChat(search_contact){
+
+            const search = search_contact.toLowerCase().trim();
+            if (!search) {
+                this.filteredContacts = this.contacts
+                return;
+            }
+            this.filteredContacts  = this.filteredContacts.filter(c => c.name.toLowerCase().indexOf(search) > -1)
+
         }
     }
 }
