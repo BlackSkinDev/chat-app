@@ -4,7 +4,7 @@
             type="text"
             placeholder="search contact"
             class="w-full px-2 py-2 border-2 border-gray-200 rounded-2xl"
-            v-model="search_contact"
+            v-model="search_chat"
         />
     </div>
 </template>
@@ -14,12 +14,12 @@ export default {
     name: "SearchChat",
     data(){
         return{
-            search_contact:""
+            search_chat:""
         }
     },
     watch:{
-        search_contact(){
-            this.$emit('search',this.search_contact)
+        search_chat(){
+            this.$emit('search',this.search_chat)
         }
     }
 }

@@ -5,16 +5,16 @@
          class="flex flex-row items-center px-2 py-4 border-b-2 cursor-pointer"
          :class="activeTab === contact.name ? 'border-l-4 border-blue-400': ''"
     >
-        <ChatContact :contact="contact"></ChatContact>
+        <Chat :contact="contact"></Chat>
     </div>
 </template>
 
 <script>
-import ChatContact from "./ChatContact.vue";
+import Chat from "./Chat.vue";
 export default {
     name: "ChatContacts.vue",
     components:{
-        ChatContact
+        Chat
     },
     props:{
         contacts:Array

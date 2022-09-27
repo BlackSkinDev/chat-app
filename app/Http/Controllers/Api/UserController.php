@@ -16,8 +16,7 @@ class UserController extends Controller
     /**
      * Display user basic info
      *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @return JsonResponse
      */
     public function show():JsonResponse
     {
@@ -31,7 +30,7 @@ class UserController extends Controller
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function update(Request $request, $id)
     {
@@ -42,7 +41,7 @@ class UserController extends Controller
      * delete user account.
      *
      * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function destroy($id)
     {

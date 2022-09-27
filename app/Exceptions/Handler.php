@@ -73,7 +73,7 @@ class Handler extends ExceptionHandler
         }
 
         if($e instanceof  AuthenticationException ){
-            return $this->error('Unauthenticated',null,Response::HTTP_UNAUTHORIZED);
+            return $this->error('Your session has expired. Login to continue',null,Response::HTTP_UNAUTHORIZED);
         }
 
         if ($e instanceof UnauthorizedHttpException) {

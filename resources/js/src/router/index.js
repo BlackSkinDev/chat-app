@@ -20,8 +20,10 @@ const routes = [
     {
         path:'/home',
         name:"Home",
-        isProtected:true,
-        component:()=>import('../Pages/Home.vue')
+        component:()=>import('../Pages/Home.vue'),
+        meta: {
+            requiresAuth: true
+        }
     }
 ]
 
@@ -38,9 +40,6 @@ router.beforeEach((to, from, next) => {
         if (!isAuthenticated) {
             next({
                 path: '/',
-                query: {
-                    access:'denied',
-                }
             })
         }
     }

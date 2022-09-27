@@ -7,11 +7,9 @@ const toaster = createToaster({
 import router from "../router";
 export const helpers = {
 
-    destroyToken : (expired = null)=>{
-        const query = {}
-        if (expired) query.access = 'denied'
+    destroyToken : ()=>{
         localStorage.removeItem('access_token')
-        router.push({ path: '/', query});
+        router.push({ path: '/'});
     },
     setToken : (token)=>{
         localStorage.setItem('access_token',token)

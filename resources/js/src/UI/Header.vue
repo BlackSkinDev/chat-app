@@ -1,4 +1,5 @@
 <template>
+
     <!-- header -->
     <div class="px-5 py-5 flex justify-between items-center bg-white border-b-2">
         <div class="font-semibold text-2xl">{{app_name}}</div>
@@ -36,9 +37,9 @@
                 </div>
             </div>
         </div>
-
     </div>
     <!-- end header -->
+
 </template>
 
 <script>
@@ -50,6 +51,7 @@ export default {
     name: "Header",
     props: {
         dropdown_status: Boolean,
+        user: Object
     },
     components:{
         MoonLoader
@@ -57,7 +59,6 @@ export default {
     data(){
         return{
             app_name:import.meta.env.VITE_APP_NAME,
-            user:{},
             status:false,
             uploadedAvatar:"",
             loading:false
@@ -65,19 +66,10 @@ export default {
     },
     methods:{
 
-        fetchAuthUserDetails() {
-            httpGet('/user').then((res) => {
-                this.user = res.data;
-            }).catch((err) => {
-                if (err.status === 401) helpers.destroyToken(true)
-                helpers.errorResponse(err.data.message)
-            })
-        },
         logout(){
             httpPost('/logout').then(() => {
                 helpers.destroyToken()
             }).catch((err) => {
-                if (err.status === 401) helpers.destroyToken(true)
                 helpers.errorResponse(err.data.message)
             })
         },
@@ -89,7 +81,6 @@ export default {
                 this.uploadedAvatar = res.data;
                 helpers.successResponse(res.message)
             }).catch((err) => {
-                if (err.status === 401) helpers.destroyToken(true)
                 helpers.errorResponse(err.data.message)
             })
             .finally(() => {
@@ -106,8 +97,9 @@ export default {
 
     },
     created() {
-        this.fetchAuthUserDetails()
+        console.log(this.user)
     }
+
 }
 </script>
 

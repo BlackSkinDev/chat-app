@@ -1,7 +1,7 @@
 <template>
     <div class="flex flex-col mt-5">
 
-        <div class="flex  mb-4" v-for="(message,idx) in chats" :key="idx" :class="user_id === message.user_id ? 'justify-end' : 'justify-start' ">
+        <div class="flex  mb-4" v-for="(message,idx) in chats" :key="idx" :class="user_id === message.user_id ? 'justify-end' : 'justify-start' " v-chat-scroll>
             <ChatMessage :message="message" :user_id="user_id"></ChatMessage>
         </div>
 

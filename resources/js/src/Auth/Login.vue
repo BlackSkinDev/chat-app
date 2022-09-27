@@ -72,7 +72,7 @@ export default {
                 const {data:{token}} = res;
                 helpers.setToken(token)
             }).catch((err) => {
-                if (err.status === 401) helpers.destroyToken(true)
+                if (err.status === 401) helpers.destroyToken()
                 helpers.errorResponse(err.data.message)
             })
             .finally(() => {
@@ -89,11 +89,7 @@ export default {
          }
     },
     created() {
-        if(this.$route.query.access && this.$route.query.access === 'denied' ){
-            this.$toast.show('Your session has expired! Please log in to continue', {
-                type: 'error',
-            });
-        }
+
     }
 
 }

@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\AvatarController;
+use App\Http\Controllers\Api\ChatController;
 use App\Http\Controllers\Api\RegisterController;
 use App\Http\Controllers\Api\UserController;
 use Illuminate\Http\Request;
@@ -28,6 +29,7 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::prefix('user')->group(function () {
         Route::get('',[UserController::class,'show']);
         Route::post('upload',[AvatarController::class,'store']);
+        Route::get('chats',[ChatController::class,'index']);
     });
 
 
