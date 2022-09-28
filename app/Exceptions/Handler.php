@@ -84,8 +84,8 @@ class Handler extends ExceptionHandler
             return $this->error($e->validator->errors()->first(), $e->validator->errors(),Response::HTTP_UNPROCESSABLE_ENTITY);
         }
 
-      // return $this->error('Error handling request, try again later',null,Response::HTTP_INTERNAL_SERVER_ERROR);
-       return $this->error($e->getMessage(),null,Response::HTTP_INTERNAL_SERVER_ERROR);
+       return $this->error('Error handling request, try again later',null,Response::HTTP_INTERNAL_SERVER_ERROR);
+       //return $this->error($e->getMessage(),null,Response::HTTP_INTERNAL_SERVER_ERROR);
 
 
     }

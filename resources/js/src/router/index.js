@@ -43,7 +43,7 @@ router.beforeEach((to, from, next) => {
             })
         }
     }
-    if (to.name === 'Register'  || to.name === 'Login') {
+    else if (to.name === 'Register'  || to.name === 'Login') {
         if (isAuthenticated) {
             next('/home');
         }

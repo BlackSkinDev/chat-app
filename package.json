@@ -23,6 +23,7 @@
         "vue-chat-scroll": "^1.4.0",
         "vue-loader": "^17.0.0",
         "vue-router": "^4.1.5",
-        "vue-spinner": "^1.0.4"
+        "vue-spinner": "^1.0.4",
+        "vue-tailwind": "^2.5.1"
     }
 }

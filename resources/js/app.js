@@ -10,6 +10,7 @@ import Toaster from '@meforma/vue-toaster';
 
 import VueChatScroll from 'vue-chat-scroll'
 
+
 createApp(App)
     .use(router)
     .use(Toaster, {

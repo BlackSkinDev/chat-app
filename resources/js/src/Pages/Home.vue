@@ -11,14 +11,11 @@
                 <div class="flex flex-col w-2/5 overflow-y-auto border-r-2 bg-white overflow-y-scroll chats-div">
 
                    <SearchChat @search="searchChat"></SearchChat>
-<!--                    <div class=" grid place-items-center mt-4">-->
-<!--                        <sync-loader :loading="true"></sync-loader>-->
-<!--                    </div>-->
+
                     <div v-if="!emptyChat">
                         <Chats :contacts="filteredChats"></Chats>
                    </div>
                    <p v-else class="p-3 font-bold text-sm">No chats</p>
-
 
                 </div>
                 <!-- End of Left Sidebar (Chats and Chat Search Bar)-->
@@ -26,6 +23,10 @@
 
                 <!--Middle Container  (Chats messages and Message typing  Bar)-->
                 <div class="flex flex-col justify-between w-full px-5">
+<!--                    <button @click="scrollToElement">scroll to last</button>-->
+<!--                    <p v-for="n of 100" :key="n" :ref="n === 100 ? 'last' : undefined">-->
+<!--                        {{ n }}-->
+<!--                    </p>-->
 
                     <div class=" overflow-y-scroll message-div" >
 
@@ -33,13 +34,7 @@
 
                     </div>
 
-                    <div class="py-5">
-                        <input
-                            class="w-full px-3 py-5 rounded-xl"
-                            type="text"
-                            placeholder="type your message here..."
-                        />
-                    </div>
+                    <ChatTextarea></ChatTextarea>
 
                 </div>
                 <!--End of Middle Container  (Chats messages and Message typing  Bar)-->
@@ -75,17 +70,17 @@ import Header from '../UI/Header.vue'
 import ChatMessages from '../UI/Chat/ChatMessages.vue'
 import Chats from "../UI/Chat/Chats.vue";
 import SearchChat from "../UI/Chat/SearchChat.vue";
-import SyncLoader from 'vue-spinner/src/SyncLoader.vue';
 import {httpGet} from "../utils/request";
 import {helpers} from "../utils/helpers";
+import ChatTextarea from "../UI/ChatTextarea.vue";
 
 export default {
     components: {
+        ChatTextarea,
         Header,
         ChatMessages,
         Chats,
         SearchChat,
-        SyncLoader
     },
     data() {
         return {
@@ -93,7 +88,6 @@ export default {
             activeTab:"",
             user:{},
             filteredChats:[],
-            loading:false,
             chats:[],
             chat_messages:[
                 {
@@ -158,11 +152,10 @@ export default {
         fetchAuthUserDetails() {
             httpGet('/user').then((res) => {
                 this.user = res.data;
-                console.log(this.user)
             }).catch((err) => {
                 if (err.status === 401) helpers.destroyToken()
                 helpers.errorResponse(err.data.message)
-
+            }).finally(()=>{
             })
         },
         searchChat(search_chat){
@@ -179,6 +172,12 @@ export default {
                this.filteredChats = res.data
             }).catch(() => {
             })
+        },
+        scrollToElement() {
+            const [el] = this.$refs.last;
+            if (el) {
+                el.scrollIntoView({ behavior: "smooth" });
+            }
         },
     },
     computed:{
