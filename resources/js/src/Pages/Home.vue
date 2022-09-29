@@ -70,7 +70,7 @@ import Chats from "../UI/Chat/Chats.vue";
 import SearchChat from "../UI/Chat/SearchChat.vue";
 import {httpGet} from "../utils/request";
 import {helpers} from "../utils/helpers";
-import ChatTextarea from "../UI/ChatTextarea.vue";
+import ChatTextarea from "../UI/Chat/ChatTextarea.vue";
 import ChatHeader from "../UI/Chat/ChatHeader.vue";
 
 export default {
@@ -84,7 +84,6 @@ export default {
     },
     data() {
         return {
-            dropdown_status:false,
             activeTab:"",
             user:{},
             filteredChats:[],
@@ -186,7 +185,7 @@ export default {
 </script>
 <style scoped>
 .chats-div{
-    height: 690px;
+    height: 720px;
 }
 .message-div{
     height: 500px;

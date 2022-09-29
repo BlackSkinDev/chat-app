@@ -1,5 +1,5 @@
 <template>
-    <div class="py-5">
+    <div class="p-5 bg-blue-100">
         <input
             class="w-full px-3 py-5 rounded-xl"
             type="text"
