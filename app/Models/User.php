@@ -1,8 +1,10 @@
 <?php
 
 namespace App\Models;
+
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Facades\Hash;
@@ -47,12 +49,23 @@ class User extends Authenticatable
     /**
      * Interact with the user's password.
      *
-     * @return \Illuminate\Database\Eloquent\Casts\Attribute
+     * @return Attribute
      */
     protected function password(): Attribute
     {
         return Attribute::make(
-            set: fn ($value) => Hash::make($value),
+            set: fn($value) => Hash::make($value),
         );
     }
+
+    /**
+     * get user messages
+     *
+     * @return HasMany
+     */
+    public function messages(): HasMany
+    {
+         return $this->hasMany(Message::class);
+    }
+
 }

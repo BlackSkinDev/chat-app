@@ -8,7 +8,7 @@ import App from './App.vue'
 
 import Toaster from '@meforma/vue-toaster';
 
-import VueChatScroll from 'vue-chat-scroll'
+
 
 
 createApp(App)
@@ -17,5 +17,4 @@ createApp(App)
         position: 'top-right',
         duration:3000
     })
-    .use(VueChatScroll)
     .mount("#app")

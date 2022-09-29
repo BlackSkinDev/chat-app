@@ -32,6 +32,8 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
         Route::post('upload',[AvatarController::class,'store']);
         Route::get('chats',[ChatController::class,'index']);
         Route::get('chat-messages/{user}',[ChatMessageController::class,'index']);
+        Route::post('send-message',[ChatMessageController::class,'store']);
+
     });
 
 

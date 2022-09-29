@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Events\NewPrivateMessageSent;
 use App\Http\Controllers\Controller;
 use App\Traits\ApiResponse;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
-use Illuminate\Http\Response;
+
 
 class ChatMessageController extends Controller
 {
@@ -20,5 +20,17 @@ class ChatMessageController extends Controller
     public function index()//: JsonResponse
     {
 
+    }
+
+    /**
+     * send message
+     *
+     * @return JsonResponse
+     */
+    public function store()//: JsonResponse
+    {
+
+        auth()->user()->messages()->create(['message'=>request('message')]);
+        broadcast(new NewPrivateMessageSent(auth()->user(),request('message')))->toOthers();
     }
 }
