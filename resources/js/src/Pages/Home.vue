@@ -22,11 +22,9 @@
 
 
                 <!--Middle Container  (Chats messages and Message typing  Bar)-->
-                <div class="flex flex-col justify-between w-full px-5">
-<!--                    <button @click="scrollToElement">scroll to last</button>-->
-<!--                    <p v-for="n of 100" :key="n" :ref="n === 100 ? 'last' : undefined">-->
-<!--                        {{ n }}-->
-<!--                    </p>-->
+                <div class="flex flex-col justify-between w-full  ">
+
+                    <ChatHeader :user="user"></ChatHeader>
 
                     <div class=" overflow-y-scroll message-div" >
 
@@ -73,9 +71,11 @@ import SearchChat from "../UI/Chat/SearchChat.vue";
 import {httpGet} from "../utils/request";
 import {helpers} from "../utils/helpers";
 import ChatTextarea from "../UI/ChatTextarea.vue";
+import ChatHeader from "../UI/Chat/ChatHeader.vue";
 
 export default {
     components: {
+        ChatHeader,
         ChatTextarea,
         Header,
         ChatMessages,
@@ -140,7 +140,7 @@ export default {
                     user_id:2,
                     avatar:'https://source.unsplash.com/vpOeXr5wmR4/600x600'
                 },
-            ]
+            ],
         }
     },
     mounted() {
@@ -173,12 +173,8 @@ export default {
             }).catch(() => {
             })
         },
-        scrollToElement() {
-            const [el] = this.$refs.last;
-            if (el) {
-                el.scrollIntoView({ behavior: "smooth" });
-            }
-        },
+
+
     },
     computed:{
         emptyChat(){
@@ -190,7 +186,7 @@ export default {
 </script>
 <style scoped>
 .chats-div{
-    height: 594px;
+    height: 690px;
 }
 .message-div{
     height: 500px;
