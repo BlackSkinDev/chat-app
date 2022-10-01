@@ -20,7 +20,12 @@ export const helpers = {
     },
     successResponse : (message)=>{
         toaster.success(message)
-    }
+    },
+    getTextAreaValueLength(string){
+        return string.filter( item => {
+            return (item !== ' ' && item !== '\n');
+        }).length
+    },
 }
 
 

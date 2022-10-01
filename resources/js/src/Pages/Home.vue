@@ -5,17 +5,19 @@
 
             <Header :user="user"></Header>
 
-            <div class="flex flex-row justify-between">
+            <div class="flex  justify-between">
 
                 <!--Left Sidebar (Chats and Chat Search Bar)-->
-                <div class="flex flex-col w-2/5 overflow-y-auto border-r-2 bg-white overflow-y-scroll chats-div">
+                <div class="flex flex-col w-2/5 border-r-2 bg-white chats-div">
 
                    <SearchChat @search="searchChat"></SearchChat>
 
-                    <div v-if="!emptyChat">
-                        <Chats :contacts="filteredChats"></Chats>
+                    <div class="overflow-y-scroll">
+                        <div v-if="!emptyChat">
+                            <Chats :contacts="filteredChats"></Chats>
+                       </div>
+                       <p v-else class="p-3 font-bold text-sm">No chats</p>
                    </div>
-                   <p v-else class="p-3 font-bold text-sm">No chats</p>
 
                 </div>
                 <!-- End of Left Sidebar (Chats and Chat Search Bar)-->
@@ -26,13 +28,13 @@
 
                     <ChatHeader :user="user"></ChatHeader>
 
-                    <div class=" overflow-y-scroll message-div" >
+                    <div class=" overflow-y-scroll message-div">
 
-                        <ChatMessages :chats="chat_messages" :user_id="user.id"></ChatMessages>
+                        <ChatMessages v-if="messageLoaded" :chats="chat_messages" :user_id="user.id" ></ChatMessages>
 
                     </div>
 
-                    <ChatTextarea></ChatTextarea>
+                    <ChatTextarea @sendMessage="sendMessage" ></ChatTextarea>
 
                 </div>
                 <!--End of Middle Container  (Chats messages and Message typing  Bar)-->
@@ -68,7 +70,7 @@ import Header from '../UI/Header.vue'
 import ChatMessages from '../UI/Chat/ChatMessages.vue'
 import Chats from "../UI/Chat/Chats.vue";
 import SearchChat from "../UI/Chat/SearchChat.vue";
-import {httpGet} from "../utils/request";
+import {httpGet, httpPost} from "../utils/request";
 import {helpers} from "../utils/helpers";
 import ChatTextarea from "../UI/Chat/ChatTextarea.vue";
 import ChatHeader from "../UI/Chat/ChatHeader.vue";
@@ -88,64 +90,14 @@ export default {
             user:{},
             filteredChats:[],
             chats:[],
-            chat_messages:[
-                {
-                    message:'I am coming',
-                    user_id:1,
-                    avatar:'https://source.unsplash.com/vpOeXr5wmR4/600x600'
-                },
-                {
-                    message:'I am not coming',
-                    user_id:2,
-                    avatar:'https://source.unsplash.com/vpOeXr5wmR4/600x600'
-                },
-                {
-                    message:'Where are you',
-                    user_id:1,
-                    avatar:'https://source.unsplash.com/vpOeXr5wmR4/600x600'
-                },
-                {
-                    message:'We are going tomorrow We are going tomorrow We are going tomorrow We are going tomorrow We are going tomorrow We are going tomorrow We are going tomorrow We are going tomorrow We are going tomorrow We are going tomorrow',
-                    user_id:1,
-                    avatar:'https://source.unsplash.com/vpOeXr5wmR4/600x600'
-                },
-                {
-                    message:'Wale don come',
-                    user_id:2,
-                    avatar:'https://source.unsplash.com/vpOeXr5wmR4/600x600'
-                },
-                {
-                    message:'I am coming',
-                    user_id:1,
-                    avatar:'https://source.unsplash.com/vpOeXr5wmR4/600x600'
-                },
-                {
-                    message:'I am not coming',
-                    user_id:2,
-                    avatar:'https://source.unsplash.com/vpOeXr5wmR4/600x600'
-                },
-                {
-                    message:'Where are you',
-                    user_id:1,
-                    avatar:'https://source.unsplash.com/vpOeXr5wmR4/600x600'
-                },
-                {
-                    message:'We are going tomorrow We are going tomorrow We are going tomorrow We are going tomorrow We are going tomorrow We are going tomorrow We are going tomorrow We are going tomorrow We are going tomorrow We are going tomorrow',
-                    user_id:1,
-                    avatar:'https://source.unsplash.com/vpOeXr5wmR4/600x600'
-                },
-                {
-                    message:'Wale don come',
-                    user_id:2,
-                    avatar:'https://source.unsplash.com/vpOeXr5wmR4/600x600'
-                },
-            ],
+            chat_messages:[],
+            messageLoaded:false,
         }
     },
     mounted() {
         this.fetchAuthUserDetails()
         this.fetchChats()
-
+        this.fetchChatMessages()
     },
     methods: {
         fetchAuthUserDetails() {
@@ -154,7 +106,6 @@ export default {
             }).catch((err) => {
                 if (err.status === 401) helpers.destroyToken()
                 helpers.errorResponse(err.data.message)
-            }).finally(()=>{
             })
         },
         searchChat(search_chat){
@@ -169,10 +120,34 @@ export default {
             httpGet('/user/chats').then((res) => {
                this.chats = res.data
                this.filteredChats = res.data
-            }).catch(() => {
             })
         },
 
+        scrollToLastChat(ref) {
+            if(this.chat_messages.length > 0){
+                const [el] = ref ? ref.last_message : null
+                if (el) {
+                    el.scrollIntoView({ behavior: "smooth" });
+                }
+            }
+        },
+
+        sendMessage(text){
+            httpPost('/user/send-message',{message:text}).then(() => {
+                this.chat_messages.push({
+                    message:text,
+                    user_id:1
+                })
+            })
+        },
+
+        fetchChatMessages(){
+            httpGet('/user/chat-messages')
+            .then((res) => {
+                this.chat_messages = res.data
+                this.messageLoaded = true
+            })
+        },
 
     },
     computed:{
