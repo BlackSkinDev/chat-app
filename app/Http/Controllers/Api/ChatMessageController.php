@@ -32,8 +32,9 @@ class ChatMessageController extends Controller
     public function store()//: JsonResponse
     {
 
-        auth()->user()->messages()->create(['message'=>request('message')]);
-        //broadcast(new NewPrivateMessageSent(auth()->user(),request('message')))->toOthers();
+        $message = auth()->user()->messages()->create(['message'=>request('message')]);
+        //event(new NewPrivateMessageSent(auth()->user(),$message->load('user')));
+        broadcast(new NewPrivateMessageSent(auth()->user(),$message->load('user')))->toOthers();
         return $this->success('Sent',null,Response::HTTP_OK);
     }
 }

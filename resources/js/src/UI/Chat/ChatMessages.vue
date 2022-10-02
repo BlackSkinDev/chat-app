@@ -1,4 +1,4 @@
-<template>=
+<template>
     <div class="flex flex-col mt-5" >
         <div v-if="chats.length > 0">
             <div
@@ -12,7 +12,7 @@
         <div v-else class="-mt-8 flex justify-center">
             <p>No messages in this chat...</p>
         </div>
-        <div ref="lastMessage" class="p-7"></div>
+        <div ref="lastMessage" class="p-10"></div>
     </div>
 </template>
 

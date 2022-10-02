@@ -24,7 +24,7 @@
 
 
                 <!--Middle Container  (Chats messages and Message typing  Bar)-->
-                <div class="flex flex-col justify-between w-full  ">
+                <div class="flex flex-col justify-between w-full ">
 
                     <ChatHeader :user="user"></ChatHeader>
 
@@ -98,6 +98,11 @@ export default {
         this.fetchAuthUserDetails()
         this.fetchChats()
         this.fetchChatMessages()
+
+        Echo.private('chat')
+            .listen('NewPrivateMessageSent',(e)=>{
+                this.chat_messages.push(e.message)
+            })
     },
     methods: {
         fetchAuthUserDetails() {
@@ -122,25 +127,13 @@ export default {
                this.filteredChats = res.data
             })
         },
-
-        scrollToLastChat(ref) {
-            if(this.chat_messages.length > 0){
-                const [el] = ref ? ref.last_message : null
-                if (el) {
-                    el.scrollIntoView({ behavior: "smooth" });
-                }
-            }
-        },
-
         sendMessage(text){
-            httpPost('/user/send-message',{message:text}).then(() => {
-                this.chat_messages.push({
-                    message:text,
-                    user_id:1
-                })
+            this.chat_messages.push({
+                message:text,
+                user_id:this.user.id
             })
+            httpPost('/user/send-message',{message:text}).then(() => {})
         },
-
         fetchChatMessages(){
             httpGet('/user/chat-messages')
             .then((res) => {
@@ -148,7 +141,6 @@ export default {
                 this.messageLoaded = true
             })
         },
-
     },
     computed:{
         emptyChat(){

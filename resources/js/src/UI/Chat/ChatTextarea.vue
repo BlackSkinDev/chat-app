@@ -5,6 +5,7 @@
             class="w-full px-3 py-5 rounded-xl h-14 text-sm"
             placeholder="type your message here..."
             v-model="text"
+            v-on:keyup.enter="send"
         />
         <div @click="send" class="ml-2 mt-1">
             <img :src="logo" class="logo cursor-pointer">

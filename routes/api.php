@@ -7,6 +7,7 @@ use App\Http\Controllers\Api\ChatMessageController;
 use App\Http\Controllers\Api\RegisterController;
 use App\Http\Controllers\Api\UserController;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Broadcast;
 use Illuminate\Support\Facades\Route;
 
 
@@ -35,8 +36,6 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
         Route::post('send-message',[ChatMessageController::class,'store']);
 
     });
-
-
 
     Route::post('logout', [AuthController::class, 'logout']);
 });

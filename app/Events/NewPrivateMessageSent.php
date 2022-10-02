@@ -36,4 +36,19 @@ class NewPrivateMessageSent implements ShouldBroadcast
     {
         return new PrivateChannel('chat');
     }
+
+    /**
+     * build data to be broadcasted to pusher
+     *
+     * @return array
+     */
+    public function broadcastWith():array
+    {
+        return [
+            'message' => [
+                'message'=>$this->message->message,
+                'user_id'=>$this->message->user_id
+            ]
+        ];
+    }
 }

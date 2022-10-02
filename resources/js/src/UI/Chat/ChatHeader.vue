@@ -1,4 +1,5 @@
 <template>
+    <div>
     <div class="p-2 bg-blue-100 flex justify-center">
         <img
             :src="user.avatar"
@@ -6,6 +7,8 @@
             :alt="user.username"
         />
         <p class="p-2 text-smfont-bold">{{this.user.username}}</p>
+    </div>
+    <p class="mt-5 text-center">Wale is typing ....</p>
     </div>
 
 </template>
