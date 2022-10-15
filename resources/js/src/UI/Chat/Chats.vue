@@ -28,7 +28,8 @@ export default {
         onTabChange(tab){
             this.activeTab = tab
         }
-    }
+    },
+
 }
 </script>
 

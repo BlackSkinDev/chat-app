@@ -30,8 +30,8 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
 
     Route::prefix('user')->group(function () {
         Route::get('',[UserController::class,'show']);
+        Route::get('all',[ChatController::class,'index']);
         Route::post('upload',[AvatarController::class,'store']);
-        Route::get('chats',[ChatController::class,'index']);
         Route::get('chat-messages',[ChatMessageController::class,'index']);
         Route::post('send-message',[ChatMessageController::class,'store']);
 
