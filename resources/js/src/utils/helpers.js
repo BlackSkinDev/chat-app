@@ -13,7 +13,7 @@ export const helpers = {
     },
     setToken : (token)=>{
         localStorage.setItem('access_token',token)
-        router.push({ path: '/home'});
+        router.push({ path: '/chat'});
     },
     errorResponse : (message)=>{
         toaster.error(message);

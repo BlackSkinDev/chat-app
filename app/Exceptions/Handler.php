@@ -85,8 +85,7 @@ class Handler extends ExceptionHandler
         }
 
        //return $this->error('Error handling request, try again later',null,Response::HTTP_INTERNAL_SERVER_ERROR);
-       //return $this->error($e->getMessage(),null,Response::HTTP_INTERNAL_SERVER_ERROR);
-        return $this->error($e,null,Response::HTTP_INTERNAL_SERVER_ERROR);
+        //return $this->error($e,null,Response::HTTP_INTERNAL_SERVER_ERROR);
 
     }
 }

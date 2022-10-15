@@ -18,15 +18,15 @@ class UserSeeder extends Seeder
         User::create([
             'username' =>'afeez_dev',
             'email'    =>'azeezafeez212@gmail.com',
+            'email_verified_at' => now(),
             'password' =>'12345678',
-            'avatar'   => config('app.url')."/images/avatar.png"
         ]);
 
         User::create([
             'username' =>'chilling_dev',
             'email'    =>'chilling@chillingdev.com',
+            'email_verified_at' => now(),
             'password' =>'12345678',
-            'avatar'   => config('app.url')."/images/avatar.png"
         ]);
     }
 }
