@@ -210,7 +210,7 @@ export default {
     },
     methods: {
         fetchAuthUserDetails() {
-            httpGet('/user').then((res) => {
+            httpGet('/profile').then((res) => {
                 this.auth_user = res.data;
             }).catch((err) => {
                 if (err.status === 401) helpers.destroyToken()
@@ -218,7 +218,7 @@ export default {
             })
         },
         fetchUsers(){
-            httpGet('/user/all').then((res) => {
+            httpGet('/friends').then((res) => {
                 this.users = res.data
                 this.filteredUsers = res.data
             })

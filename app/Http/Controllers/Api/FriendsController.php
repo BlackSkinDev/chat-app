@@ -9,7 +9,7 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 
-class ChatController extends Controller
+class FriendsController extends Controller
 {
     use ApiResponse;
     /**

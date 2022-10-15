@@ -8,6 +8,10 @@ import App from './App.vue'
 
 import Toaster from '@meforma/vue-toaster';
 
+import FloatingVue from 'floating-vue'
+
+import 'floating-vue/dist/style.css'
+
 
 
 
@@ -17,4 +21,5 @@ createApp(App)
         position: 'top-right',
         duration:3000
     })
+    .use(FloatingVue)
     .mount("#app")

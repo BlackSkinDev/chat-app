@@ -2,7 +2,18 @@
     <div class="py-2 px-3 bg-grey-lighter flex flex-row justify-between items-center">
         <div class="flex items-center">
             <div>
-                <img class="w-10 h-10 rounded-full" :src="auth_user.avatar"/>
+                <div @click="browse" v-tooltip="'Click to update avatar'">
+                    <img
+                        :src="uploadedAvatar ? uploadedAvatar :auth_user.avatar"
+                        class="object-cover h-12 w-12 rounded-full cursor-pointer"
+                        :class="loading ? 'opacity-20' : '' "
+                        :alt="auth_user.username"
+                    />
+                    <moon-loader :loading="loading" class="absolute -mt-14 -ml-2"></moon-loader>
+                </div>
+                <div class="hidden">
+                    <input type="file" ref="file" @change="handleFileUpload">
+                </div>
             </div>
             <div class="ml-4">
                 <p class="text-grey-darkest">
@@ -28,10 +39,57 @@
 </template>
 
 <script>
+import {httpPost} from "../../utils/request";
+import {helpers} from "../../utils/helpers"
+import MoonLoader from 'vue-spinner/src/MoonLoader.vue';
+
 export default {
     name: "ChatScreenHeader",
     props: {
-        auth_user: Object
+        auth_user: Object,
+    },
+    components:{
+        MoonLoader
+    },
+    data(){
+        return{
+            app_name:import.meta.env.VITE_APP_NAME,
+            status:false,
+            uploadedAvatar:"",
+            loading:false
+        }
+    },
+    methods:{
+
+        logout(){
+            httpPost('/logout').then(() => {
+                helpers.destroyToken()
+            }).catch((err) => {
+                helpers.errorResponse(err.data.message)
+            })
+        },
+        handleFileUpload(){
+            let formData = new FormData();
+            formData.append('file', this.$refs.file.files[0]);
+            this.loading = true;
+            httpPost('/upload',formData).then((res) => {
+                this.uploadedAvatar = res.data;
+                helpers.successResponse(res.message)
+            }).catch((err) => {
+                helpers.errorResponse(err.data.message)
+            })
+                .finally(() => {
+                    this.loading = false
+                });
+        },
+        toggleDropdown(){
+            this.status = !this.status
+        },
+        browse(){
+            this.$refs.file.click()
+        },
+
+
     },
 }
 </script>
