@@ -67,11 +67,9 @@ class User extends Authenticatable
      */
     public function getLastMessageWithAuthUser($user_id)
     {
-
-        $logged_in_user_id = auth()->id();
         return  Message::where('sender_id',$user_id)
-            ->where('receiver_id',$logged_in_user_id)
-            ->orWhere('sender_id',$logged_in_user_id)
+            ->where('receiver_id',auth()->id())
+            ->orWhere('sender_id',auth()->id())
             ->where('receiver_id',$user_id)
             ->orderBy('created_at','desc')
             ->first();

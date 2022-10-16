@@ -25,7 +25,7 @@ class UserResource extends JsonResource
             'avatar'                 =>$this->avatar ?? config('app.url')."/images/avatar.png",
             'last_text_message'      =>$last_message?->text_message ,
             'last_picture_message'   =>$last_message?->picture_message ,
-            'last_message_time'      =>$last_message ? Carbon::parse($last_message->created_at)->format('H:i')  : null,//->created_at)->format('H:i'),
+            'last_message_time'      =>$last_message ? Carbon::parse($last_message->created_at)->format('H:i')  : null
         ];
     }
 }
