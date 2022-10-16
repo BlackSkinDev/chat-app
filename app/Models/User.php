@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Facades\Hash;
@@ -61,13 +62,22 @@ class User extends Authenticatable
     }
 
     /**
-     * get user messages
+     * get user last message with logged-in user
      *
-     * @return HasMany
      */
-    public function messages(): HasMany
+    public function getLastMessageWithAuthUser($user_id)
     {
-         return $this->hasMany(Message::class);
+
+        $logged_in_user_id = auth()->id();
+        return  Message::where('sender_id',$user_id)
+            ->where('receiver_id',$logged_in_user_id)
+            ->orWhere('sender_id',$logged_in_user_id)
+            ->where('receiver_id',$user_id)
+            ->orderBy('created_at','desc')
+            ->first();
+
     }
+
+
 
 }

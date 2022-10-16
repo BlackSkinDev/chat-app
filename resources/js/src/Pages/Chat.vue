@@ -222,7 +222,7 @@ export default {
             })
         },
         fetchUsers(){
-            httpGet('/friends').then((res) => {
+            httpGet('/all?has_conversation=true').then((res) => {
                 this.users = res.data
                 this.filteredUsers = res.data
             })
@@ -234,7 +234,9 @@ export default {
                 this.filteredUsers = this.users
                 return;
             }
-            this.filteredUsers  = this.filteredUsers.filter(c => c.name.toLowerCase().indexOf(search) > -1)
+            httpGet(`/all?username=${search_user}`).then((res) => {
+                this.filteredUsers = res.data
+            })
         },
         sendMessage(text){
             this.chat_messages.push({

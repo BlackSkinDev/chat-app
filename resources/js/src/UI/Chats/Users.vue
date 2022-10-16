@@ -4,25 +4,25 @@
         <div
              v-for="(user,idx) in users"
              :key="idx"
-             :class="activeTab === `${user.id}${user.name}` ? '': 'bg-white'"
+             :class="activeTab === `${user.id}${user.username}` ? 'bg-yellow-100': 'bg-white'"
              class="px-3 flex items-center  cursor-pointer"
-             @click="onTabChange(`${user.id}${user.name}`)"
+             @click="onTabChange(`${user.id}${user.username}`)"
         >
             <div>
                 <img class="h-12 w-12 rounded-full"
-                     :src="user.image"/>
+                     :src="user.avatar"/>
             </div>
             <div class="ml-4 flex-1 border-b border-grey-lighter py-4">
                 <div class="flex items-bottom justify-between">
                     <p class="text-grey-darkest">
-                        {{user.name}}
+                        {{user.username}}
                     </p>
                     <p class="text-xs text-grey-darkest">
-                        {{user.last_msg_time}}
+                        {{user.last_message_time}}
                     </p>
                 </div>
-                <p class="text-grey-dark mt-1 text-sm">
-                    {{user.last_msg}}
+                <p class="text-gray-400 mt-1 " style="font-size: 11px">
+                    {{user.last_text_message}}
                 </p>
             </div>
         </div>
