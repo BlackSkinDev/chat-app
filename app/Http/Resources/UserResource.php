@@ -22,6 +22,7 @@ class UserResource extends JsonResource
             'id'                     =>$this->id,
             'username'               =>$this->username,
             'email'                  =>$this->email,
+            'status'                 =>$this->status,
             'avatar'                 =>$this->avatar ?? config('app.url')."/images/avatar.png",
             'last_text_message'      =>$last_message?->text_message ,
             'last_picture_message'   =>$last_message?->picture_message ,

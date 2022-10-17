@@ -9,14 +9,17 @@
                     <!-- Left -->
                     <div class="w-1/3 border flex flex-col">
 
-                       <ChatHeader :auth_user="auth_user"/>
+                       <ChatHeader :auth_user="user"/>
 
                        <SearchUser @search="searchUser"/>
 
                         <div v-if="!usersAreEmpty" class="overflow-y-scroll">
-                            <Users :users="filteredUsers"/>
+                            <Users :users="filteredUsers" @userClicked="loadUserMessages"/>
                         </div>
-                        <p v-else class="p-3 font-bold text-sm mt-5">No users available</p>
+
+                        <div v-if="usersAreEmpty" class="flex items-center justify-center h-screen">
+                            <p  class="p-3 font-bold text-xl mt-5">No users available</p>
+                        </div>
 
                     </div>
 
@@ -25,142 +28,18 @@
                     <div class="w-2/3 border flex flex-col">
 
                         <!-- Header -->
-                        <ChatScreenHeader :auth_user="auth_user"/>
+                        <ChatScreenHeader :auth_user="user" v-if="loadMessage"/>
+
                         <!-- Messages -->
                         <div class="flex-1 overflow-auto" style="background-color: #DAD3CC">
-                            <div class="py-2 px-3">
-
-                                <div class="flex justify-center mb-2">
-                                    <div class="rounded py-2 px-4" style="background-color: #DDECF2">
-                                        <p class="text-sm uppercase">
-                                            February 20, 2018
-                                        </p>
-                                    </div>
-                                </div>
-
-                                <div class="flex justify-center mb-4">
-                                    <div class="rounded py-2 px-4" style="background-color: #FCF4CB">
-                                        <p class="text-xs">
-                                            Messages to this chat and calls are now secured with end-to-end encryption. Tap for more info.
-                                        </p>
-                                    </div>
-                                </div>
-
-                                <div class="flex mb-2">
-                                    <div class="rounded py-2 px-3" style="background-color: #F2F2F2">
-                                        <p class="text-sm text-teal">
-                                            Sylverter Stallone
-                                        </p>
-                                        <p class="text-sm mt-1">
-                                            Hi everyone! Glad you could join! I am making a new movie.
-                                        </p>
-                                        <p class="text-right text-xs text-grey-dark mt-1">
-                                            12:45 pm
-                                        </p>
-                                    </div>
-                                </div>
-
-                                <div class="flex mb-2">
-                                    <div class="rounded py-2 px-3" style="background-color: #F2F2F2">
-                                        <p class="text-sm text-purple">
-                                            Tom Cruise
-                                        </p>
-                                        <p class="text-sm mt-1">
-                                            Hi all! I have one question for the movie
-                                        </p>
-                                        <p class="text-right text-xs text-grey-dark mt-1">
-                                            12:45 pm
-                                        </p>
-                                    </div>
-                                </div>
-
-                                <div class="flex mb-2">
-                                    <div class="rounded py-2 px-3" style="background-color: #F2F2F2">
-                                        <p class="text-sm text-orange">
-                                            Harrison Ford
-                                        </p>
-                                        <p class="text-sm mt-1">
-                                            Again?
-                                        </p>
-                                        <p class="text-right text-xs text-grey-dark mt-1">
-                                            12:45 pm
-                                        </p>
-                                    </div>
-                                </div>
-
-                                <div class="flex mb-2">
-                                    <div class="rounded py-2 px-3" style="background-color: #F2F2F2">
-                                        <p class="text-sm text-orange">
-                                            Russell Crowe
-                                        </p>
-                                        <p class="text-sm mt-1">
-                                            Is Andrés coming for this one?
-                                        </p>
-                                        <p class="text-right text-xs text-grey-dark mt-1">
-                                            12:45 pm
-                                        </p>
-                                    </div>
-                                </div>
-
-                                <div class="flex mb-2">
-                                    <div class="rounded py-2 px-3" style="background-color: #F2F2F2">
-                                        <p class="text-sm text-teal">
-                                            Sylverter Stallone
-                                        </p>
-                                        <p class="text-sm mt-1">
-                                            He is. Just invited him to join.
-                                        </p>
-                                        <p class="text-right text-xs text-grey-dark mt-1">
-                                            12:45 pm
-                                        </p>
-                                    </div>
-                                </div>
-
-                                <div class="flex justify-end mb-2">
-                                    <div class="rounded py-2 px-3" style="background-color: #E2F7CB">
-                                        <p class="text-sm mt-1">
-                                            Hi guys.
-                                        </p>
-                                        <p class="text-right text-xs text-grey-dark mt-1">
-                                            12:45 pm
-                                        </p>
-                                    </div>
-                                </div>
-
-                                <div class="flex justify-end mb-2">
-                                    <div class="rounded py-2 px-3" style="background-color: #E2F7CB">
-                                        <p class="text-sm mt-1">
-                                            Count me in
-                                        </p>
-                                        <p class="text-right text-xs text-grey-dark mt-1">
-                                            12:45 pm
-                                        </p>
-                                    </div>
-                                </div>
-
-                                <div class="flex mb-2">
-                                    <div class="rounded py-2 px-3" style="background-color: #F2F2F2">
-                                        <p class="text-sm text-purple">
-                                            Tom Cruise
-                                        </p>
-                                        <p class="text-sm mt-1">
-                                            Get Andrés on this movie ASAP!
-                                        </p>
-                                        <p class="text-right text-xs text-grey-dark mt-1">
-                                            12:45 pm
-                                        </p>
-                                    </div>
-                                </div>
-
-
-
-
-
+                            <div v-if="!loadMessage" class="flex items-center justify-center h-screen -mt-20">
+                                <p  class="p-3 font-bold text-sm mt-5">Click on a user to start chat</p>
                             </div>
+                            <ChatMessages v-if="loadMessage" :messages="chat_messages_with_user" :user="user"/>
                         </div>
 
                         <!-- Input -->
-                        <div class="bg-grey-lighter px-4 py-4 flex items-center">
+                        <div class="bg-grey-lighter px-4 py-4 flex items-center" v-if="loadMessage">
                             <div class="cursor-pointer">
                                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"><path opacity=".45" fill="#263238" d="M9.153 11.603c.795 0 1.439-.879 1.439-1.962s-.644-1.962-1.439-1.962-1.439.879-1.439 1.962.644 1.962 1.439 1.962zm-3.204 1.362c-.026-.307-.131 5.218 6.063 5.551 6.066-.25 6.066-5.551 6.066-5.551-6.078 1.416-12.129 0-12.129 0zm11.363 1.108s-.669 1.959-5.051 1.959c-3.505 0-5.388-1.164-5.607-1.959 0 0 5.912 1.055 10.658 0zM11.804 1.011C5.609 1.011.978 6.033.978 12.228s4.826 10.761 11.021 10.761S23.02 18.423 23.02 12.228c.001-6.195-5.021-11.217-11.216-11.217zM12 21.354c-5.273 0-9.381-3.886-9.381-9.159s3.942-9.548 9.215-9.548 9.548 4.275 9.548 9.548c-.001 5.272-4.109 9.159-9.382 9.159zm3.108-9.751c.795 0 1.439-.879 1.439-1.962s-.644-1.962-1.439-1.962-1.439.879-1.439 1.962.644 1.962 1.439 1.962z"></path></svg>
                             </div>
@@ -184,6 +63,7 @@ import ChatHeader from "../UI/ChatHeader.vue";
 import SearchUser from "../UI/Chats/SearchUser.vue";
 import Users from "../UI/Chats/Users.vue";
 import ChatScreenHeader from "../UI/Chats/ChatScreenHeader.vue";
+import ChatMessages from "../UI/Chats/ChatMessages.vue";
 import {httpGet, httpPost} from "../utils/request";
 import {helpers} from "../utils/helpers";
 export default {
@@ -193,19 +73,20 @@ export default {
         ChatHeader,
         SearchUser,
         Users,
+        ChatMessages
     },
     data(){
         return{
             filteredUsers:[],
-            auth_user:{},
-            users:[]
-
+            user:{},
+            users:[],
+            loadMessage:false,
+            chat_messages_with_user:{}
         }
     },
     mounted() {
         this.fetchAuthUserDetails()
         this.fetchUsers()
-        this.fetchChatMessages()
 
         Echo.private('chat')
             .listen('NewPrivateMessageSent',(e)=>{
@@ -215,7 +96,7 @@ export default {
     methods: {
         fetchAuthUserDetails() {
             httpGet('/profile').then((res) => {
-                this.auth_user = res.data;
+                this.user = res.data;
             }).catch((err) => {
                 if (err.status === 401) helpers.destroyToken()
                 helpers.errorResponse(err.data.message)
@@ -243,15 +124,25 @@ export default {
                 message:text,
                 user_id:this.user.id
             })
-            httpPost('/user/send-message',{message:text}).then(() => {})
+            httpPost('/send-message',{message:text}).then(() => {})
         },
-        fetchChatMessages(){
-            httpGet('/user/chat-messages')
-                .then((res) => {
-                    this.chat_messages = res.data
-                    this.messageLoaded = true
-                })
+        loadUserProfile(user_id){
+            httpGet(`/profile?user=${user_id}`).then((res) => {
+                this.user = res.data;
+            })
         },
+        loadUserMessages(user_id){
+            this.loadMessage = true
+
+            //load user profile
+            this.loadUserProfile(user_id)
+
+            //load conversations between user and  logged_in user
+            httpGet(`/chat-messages?user=${user_id}`).then((res) => {
+                this.chat_messages_with_user = res.data;
+            })
+
+        }
     },
     computed:{
         usersAreEmpty(){

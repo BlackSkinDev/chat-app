@@ -4,7 +4,6 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Http\Resources\UserResource;
-use App\Models\Message;
 use App\Models\User;
 use App\Traits\ApiResponse;
 use Carbon\Carbon;

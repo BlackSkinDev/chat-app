@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Http\Resources\UserResource;
+use App\Models\User;
 use App\Traits\ApiResponse;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -20,7 +21,8 @@ class UserController extends Controller
      */
     public function show():JsonResponse
     {
-        return $this->success(null,UserResource::make(auth()->user()),Response::HTTP_OK);
+        $user = request('user') ? User::where('id',request('user'))->firstorfail() : auth()->user();
+        return $this->success(null,UserResource::make($user),Response::HTTP_OK);
     }
 
 

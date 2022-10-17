@@ -18,14 +18,5 @@ class Message extends Model
         'picture_message',
     ];
 
-    public function user(){
-        return $this->belongsTo(User::class);
-    }
-
-    /**
-     * Get the message time
-     *
-     * @return Attribute
-     */
 
 }

@@ -21,59 +21,20 @@
 </template>
 
 <script>
-import {httpPost} from "../utils/request";
-import {helpers} from "../utils/helpers"
-import MoonLoader from 'vue-spinner/src/MoonLoader.vue';
+
 
 export default {
     name: "Header",
     components:{
-        MoonLoader
+
     },
 
     data(){
         return{
             app_name:import.meta.env.VITE_APP_NAME,
-            status:false,
-            uploadedAvatar:"",
-            loading:false
         }
     },
-    methods:{
 
-        logout(){
-            httpPost('/logout').then(() => {
-                helpers.destroyToken()
-            }).catch((err) => {
-                helpers.errorResponse(err.data.message)
-            })
-        },
-        handleFileUpload(){
-            let formData = new FormData();
-            formData.append('file', this.$refs.file.files[0]);
-            this.loading = true;
-            httpPost('/user/upload',formData).then((res) => {
-                this.uploadedAvatar = res.data;
-                helpers.successResponse(res.message)
-            }).catch((err) => {
-                helpers.errorResponse(err.data.message)
-            })
-                .finally(() => {
-                    this.loading = false
-                });
-        },
-        toggleDropdown(){
-            this.status = !this.status
-        },
-        browse(){
-            this.$refs.file.click()
-        },
-
-
-    },
-    created() {
-
-    }
 
 }
 </script>

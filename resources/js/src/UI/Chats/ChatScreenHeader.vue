@@ -3,7 +3,8 @@
         <div class="py-2 px-3 bg-grey-lighter flex flex-row justify-between items-center">
             <div class="flex items-center">
                 <div>
-                    <div @click="browse" v-tooltip="'Click to update avatar'">
+<!--                    <div @click="browse" v-tooltip="'Click to update avatar'">-->
+                    <div>
                         <img
                             :src="uploadedAvatar ? uploadedAvatar :auth_user.avatar"
                             class="object-cover h-12 w-12 rounded-full cursor-pointer"
@@ -18,7 +19,7 @@
                 </div>
                 <div class="ml-4">
                     <p class="text-grey-darkest">
-                        {{auth_user.status || 'Hey there I am using whatsapp'}}
+                        {{auth_user.status}}
                     </p>
                     <p class="text-grey-darker text-xs mt-1">
                         Online

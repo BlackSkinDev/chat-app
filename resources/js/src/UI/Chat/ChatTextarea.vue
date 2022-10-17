@@ -8,7 +8,7 @@
             v-on:keyup.enter="send"
         />
         <div @click="send" class="ml-2 mt-1">
-            <img :src="logo" class="logo cursor-pointer">
+<!--            <img :src="logo" class="logo cursor-pointer">-->
         </div>
 
     </div>
@@ -16,7 +16,7 @@
 
 <script>
 import {helpers} from "../../utils/helpers";
-import logo from "../../Assests/send.svg"
+
 
 
 export default {
@@ -27,7 +27,7 @@ export default {
     data(){
         return{
             text:"",
-            logo:logo
+
         }
     },
     methods:{
