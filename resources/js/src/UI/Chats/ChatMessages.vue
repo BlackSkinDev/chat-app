@@ -5,6 +5,7 @@
         <!--        Messages-->
         <div class="mt-1" v-if="Object.keys(messages).length > 0">
 
+
             <div
                 v-for="(message, date,idx) in messages"
                 :key="idx"
@@ -33,7 +34,7 @@
 
         </div>
 
-        <div ref="lastMessage" class="bg-red-500">Ababakkwnfkenfefk</div>
+        <div ref="lastMessage" class="bg-red-500 p-36">Ababakkwnfkenfefk</div>
 
     </div>
 </template>
@@ -61,10 +62,7 @@ export default {
     },
     methods:{
         scrollToLastChat() {
-            const [el] = this.$refs.lastMessage || null ;
-            if (el) {
-                el.scrollIntoView({ behavior: "smooth" });
-            }
+            this.$refs.lastMessage.scrollIntoView({ behavior: "smooth" });
         },
     },
     watch:{
